@@ -1,0 +1,5 @@
+mutation {
+  messageAdd(userUid: "Dwadawda", content: "dwadawda", img_url: "dawdawdadw", username: "dawdada"){
+    userUid
+  }
+}
