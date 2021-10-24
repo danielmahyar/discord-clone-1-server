@@ -1,27 +1,23 @@
-import express from 'express';
-import mongoose from 'mongoose';
+import express from 'express'
+import mongoose from 'mongoose'
 import dotenv from 'dotenv'
-import { ApolloServer, gql }  from 'apollo-server-express';
-import { createServer } from 'http';
+import { ApolloServer }  from 'apollo-server-express'
+import { createServer } from 'http'
 import { execute, subscribe } from 'graphql'
 import { SubscriptionServer } from 'subscriptions-transport-ws'
-import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
+import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core"
 import cors from 'cors'
 import schema from './GraphQL/Schema'
 dotenv.config()
-const app = express();
-
-const PRODUCTION = true
-
-
-
+const app = express()
+const PRODUCTION = false
 
 
 const MONGODB_URL: any = (PRODUCTION) ? process.env.MONGODB_URL_PROD : process.env.MONGODB_URL
 const PORT: any = process.env.PORT
 
 const startApolloServer = async () => {
-	const httpServer = createServer(app);
+	const httpServer = createServer(app)
 
 	const server = new ApolloServer({
 		schema,
@@ -30,10 +26,10 @@ const startApolloServer = async () => {
 			{
 				async serverWillStart() {
 				return {
-				async drainServer() {
-					subscriptionServer.close();
-				}
-				};
+					async drainServer() {
+						subscriptionServer.close();
+					}
+					};
 				}
 			},
 		],
