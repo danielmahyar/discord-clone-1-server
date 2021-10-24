@@ -10,7 +10,14 @@ import cors from 'cors'
 import schema from './GraphQL/Schema'
 dotenv.config()
 const app = express();
-const MONGODB_URL: any = process.env.MONGODB_URL
+
+const PRODUCTION = true
+
+
+
+
+
+const MONGODB_URL: any = (PRODUCTION) ? process.env.MONGODB_URL_PROD : process.env.MONGODB_URL
 const PORT: any = process.env.PORT
 
 const startApolloServer = async () => {
