@@ -2,7 +2,8 @@ import { Schema, model } from 'mongoose'
 
 export type UserType = {
 	_id: String,
-	numberID: Number,
+	email: String,
+	numberId: Number,
 	username: String,
 	img_url: String,
 	sub_text: String,
@@ -11,8 +12,9 @@ export type UserType = {
 }
 
 const UserSchema = new Schema({
-	numberID: Number,
+	numberId: Number,
 	username: String,
+	email: String,
 	img_url: String,
 	sub_text: String,
 	status: String,

@@ -27,6 +27,29 @@ const RootQueryType = new GraphQLObjectType({
 				})
 			}
 		},
+		userLogin: {
+			type: UserType,
+			args: {
+				email: { type: GraphQLNonNull(GraphQLString) },
+				password: { type: GraphQLNonNull(GraphQLString) },
+			},
+			resolve: (parent, args) => {
+				return DBQueries.userLogin(args.email, args.password)
+				.then((user) => {
+					console.log(user.email)
+					if(user.email === args.email){
+						const temp = Object.assign(user, { uid: user._id })
+						console.log(temp)
+						return temp
+					} else {
+						throw new UserInputError("User not found", { email: args.email })
+					}
+				})
+				.catch((err) => {
+
+				})
+			}
+		},
 		getUser: {
 			type: UserType,
 			description: "Specific user",

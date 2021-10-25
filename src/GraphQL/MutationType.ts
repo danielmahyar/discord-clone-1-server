@@ -1,5 +1,6 @@
 import { GraphQLNonNull, GraphQLObjectType, GraphQLString } from "graphql"
 import MessageType from "./ObjectTypes/Message"
+import UserType from "./ObjectTypes/User"
 import DBQueries from '../MongoDB/userqueries'
 import { pubsub } from "./Schema"
 
@@ -26,6 +27,20 @@ import { pubsub } from "./Schema"
 					return messageAdded
 				}).catch((error) => {
 					console.log(error)
+				})
+			}
+		},
+		changeStatus: {
+			type: UserType,
+			args: {
+				userUid: { type: GraphQLNonNull(GraphQLString) },
+				status: { type: GraphQLNonNull(GraphQLString) }
+			},
+			resolve: (parent, args: any) => {
+				return DBQueries.changeStatus(args.userUid, args.status).then((userChanged) => {
+					const temp = Object.assign(userChanged, { uid: userChanged._id, status: args.status })
+					pubsub.publish('friendsStatusChanged/' + args.userUid, { friendsStatusChanged: temp })
+					return userChanged
 				})
 			}
 		}

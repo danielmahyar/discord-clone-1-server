@@ -1,5 +1,6 @@
-import { GraphQLNonNull, GraphQLObjectType, GraphQLString } from "graphql";
+import { GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString } from "graphql";
 import MessageType from "./ObjectTypes/Message";
+import { FriendType } from "./ObjectTypes/User";
 import { pubsub } from "./Schema";
 
 const RootSubscriptionType = new GraphQLObjectType({
@@ -11,7 +12,23 @@ const RootSubscriptionType = new GraphQLObjectType({
 			args: {
 				chatId: { type: GraphQLNonNull(GraphQLString) }
 			},
-			subscribe: (parent, args) => pubsub.asyncIterator('messageAdded')
+			subscribe: (parent, args) => {
+				console.log("I get messages now")
+				return pubsub.asyncIterator('messageAdded')
+			}
+		},
+
+		friendsStatusChanged: {
+			type: FriendType,
+			args: {
+				friendUids: { type: GraphQLList(GraphQLString) }
+			},
+			subscribe: (parent, args) => {
+				const formatUidArray = args.friendUids.map((friendUid: string) => {
+					return 'friendsStatusChanged/' + friendUid
+				})
+				return pubsub.asyncIterator(formatUidArray)
+			}	
 		}
 	})
 })

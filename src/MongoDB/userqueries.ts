@@ -12,12 +12,19 @@ const MongoQueries = {
 		})
 	},
 
+	userLogin: async (email: string, password: string = ""): Promise<UserType> => {
+		return UserModel.findOne({ email })
+	},
+
 	getUser: async (uid: string): Promise<UserType> => {
 		const user: UserType = await UserModel.findById(uid)
 		return user
 	},
 
+	changeStatus: async (uid: string, status: string): Promise<UserType> => UserModel.findByIdAndUpdate(uid, { status }),
+
 	getMessages: async (chatId: string): Promise<Array<MessageType>> => {
+		console.log("%cServer Speaking: I am getting messages", "color: green;")
 		return MessageModel.find()
 	},
 

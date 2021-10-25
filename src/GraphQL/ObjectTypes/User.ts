@@ -6,7 +6,8 @@ const UserType = new GraphQLObjectType({
 	description: 'A normal discord user',
 	fields: () => ({
 		uid: { type: GraphQLNonNull(GraphQLString) },
-		numberID: { type: GraphQLNonNull(GraphQLInt)},
+		email: { type: GraphQLNonNull(GraphQLString) },
+		numberId: { type: GraphQLNonNull(GraphQLInt)},
 		username: { type: GraphQLNonNull(GraphQLString) },
 		img_url: { type: GraphQLNonNull(GraphQLString) },
 		sub_text: { type: GraphQLNonNull(GraphQLString) },
@@ -18,7 +19,6 @@ const UserType = new GraphQLObjectType({
 					const friendFormat = friend.map((friend: any) => {
 						const temp = { ...friend._doc, uid: friend._id }
 						delete temp._id
-						console.log(temp)
 						return temp
 					})
 					return friendFormat;
@@ -30,11 +30,11 @@ const UserType = new GraphQLObjectType({
 	})
 })
 
-const FriendType = new GraphQLObjectType({
+export const FriendType = new GraphQLObjectType({
 	name: "Friend",
 	fields: () => ({
 		uid: { type: GraphQLNonNull(GraphQLString) },
-		numberID: { type: GraphQLNonNull(GraphQLInt) },
+		numberId: { type: GraphQLNonNull(GraphQLInt) },
 		username: { type: GraphQLNonNull(GraphQLString) },
 		img_url: { type: GraphQLNonNull(GraphQLString) },
 		sub_text: { type: GraphQLNonNull(GraphQLString) },
