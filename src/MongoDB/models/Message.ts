@@ -7,11 +7,13 @@ export type MessageType = {
 	username: String,
 	img_url: String,
 	sub_text: String,
+	time: String,
 }
 
 const MessageSchema = new Schema({
 	userUid: String,
 	content: String,
+	time: String,
 	username: String,
 	img_url: String,
 	sub_text: String,

@@ -2,7 +2,7 @@ import { GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString } from "g
 import { UserInputError } from 'apollo-server-express'
 import MessageType from "./ObjectTypes/Message"
 import DBQueries from '../MongoDB/userqueries'
-import UserType from "./ObjectTypes/User"
+import UserType, { FriendType } from "./ObjectTypes/User"
 
 const RootQueryType = new GraphQLObjectType({
 	name: 'Query',
@@ -61,6 +61,22 @@ const RootQueryType = new GraphQLObjectType({
 					return Object.assign(user, { uid: args.uid });
 				}).catch((err) => {
 					throw new UserInputError("User not found", { uid: args.uid })
+				})
+			}
+		},
+		getUserFriends: {
+			type: GraphQLList(FriendType),
+			args: {
+				friendUids: { type: GraphQLList(GraphQLString) }
+			},
+			resolve: (parent, args) => { 
+				return DBQueries.findUserFriends(args.friendUids).then((friends) => {
+					const friendFormat = friends.map((friend: any) => {
+						const temp = { ...friend._doc, uid: friend._id }
+						delete temp._id
+						return temp
+					})
+					return friendFormat;
 				})
 			}
 		}

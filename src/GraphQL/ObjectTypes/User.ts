@@ -15,8 +15,8 @@ const UserType = new GraphQLObjectType({
 		friends: {
 			type: new GraphQLList(FriendType),
 			resolve: (user) => {
-				return DBQueries.findUserFriends(user.friends).then((friend) => {
-					const friendFormat = friend.map((friend: any) => {
+				return DBQueries.findUserFriends(user.friends).then((friends) => {
+					const friendFormat = friends.map((friend: any) => {
 						const temp = { ...friend._doc, uid: friend._id }
 						delete temp._id
 						return temp

@@ -9,6 +9,7 @@ const MessageType = new GraphQLObjectType({
 		content: { type: GraphQLNonNull(GraphQLString) },
 		username: { type: GraphQLNonNull(GraphQLString) },
 		img_url: { type: GraphQLNonNull(GraphQLString) },
+		time: { type: GraphQLNonNull(GraphQLString) },
 	})
 })
 
