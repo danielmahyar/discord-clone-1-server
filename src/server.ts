@@ -33,6 +33,7 @@ const startApolloServer = async () => {
 				}
 			},
 		],
+		introspection: true
 	});
 
 	await mongoose.connect(MONGODB_URL)
