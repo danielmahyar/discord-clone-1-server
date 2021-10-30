@@ -1,5 +1,6 @@
 import { GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString } from "graphql";
 import MessageType from "./ObjectTypes/Message";
+import ServerType from "./ObjectTypes/Server";
 import { FriendType } from "./ObjectTypes/User";
 import { pubsub } from "./Schema";
 
@@ -29,6 +30,20 @@ const RootSubscriptionType = new GraphQLObjectType({
 				})
 				return pubsub.asyncIterator(formatUidArray)
 			}	
+		},
+		
+		serverSubscriptions: {
+			type: ServerType,
+			args: {
+				serverIds: { type: GraphQLList(GraphQLString) }
+			},
+			subscribe: (parent, args) => {
+				const formatServerIds = args.serverIds.map((serverId: string) => {
+					return 'serverSub/' + serverId
+				})
+
+				return pubsub.asyncIterator(formatServerIds)
+			}
 		}
 	})
 })

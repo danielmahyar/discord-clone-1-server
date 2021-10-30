@@ -3,6 +3,7 @@ import { UserInputError } from 'apollo-server-express'
 import MessageType from "./ObjectTypes/Message"
 import DBQueries from '../MongoDB/userqueries'
 import UserType, { FriendType } from "./ObjectTypes/User"
+import ServerType from "./ObjectTypes/Server"
 
 const RootQueryType = new GraphQLObjectType({
 	name: 'Query',
@@ -77,6 +78,18 @@ const RootQueryType = new GraphQLObjectType({
 						return temp
 					})
 					return friendFormat;
+				})
+			}
+		},
+		getServer: {
+			type: ServerType,
+			args: {
+				serverId: { type: GraphQLList(GraphQLString) }
+			},
+			resolve: (parent, args) => { 
+				return DBQueries.serverFind(args.serverId).then((server) => {
+					const temp = Object.assign(server, { id: server._id })
+					return temp;
 				})
 			}
 		}

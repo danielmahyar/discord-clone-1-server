@@ -10,7 +10,7 @@ import cors from 'cors'
 import schema from './GraphQL/Schema'
 dotenv.config()
 const app = express()
-const PRODUCTION = true
+const PRODUCTION = false
 
 
 const MONGODB_URL: any = (PRODUCTION) ? process.env.MONGODB_URL_PROD : process.env.MONGODB_URL

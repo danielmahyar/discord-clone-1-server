@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 import MessageModel, { MessageType } from './models/Message'
+import ServerModel, { ServerType } from './models/Server'
 import UserModel, { UserType } from './models/User'
 
 const MongoQueries = {
@@ -21,6 +22,14 @@ const MongoQueries = {
 		return user
 	},
 
+	getUsers: async (uids: Array<string>): Promise<any> => {
+		const formattedUserUids = uids.map((uid) => (new mongoose.Types.ObjectId(uid)))
+
+		return UserModel.find({
+			'_id': { $in: formattedUserUids }
+		})
+	},
+
 	changeStatus: async (uid: string, status: string): Promise<UserType> => UserModel.findByIdAndUpdate(uid, { status }),
 
 	getMessages: async (chatId: string): Promise<Array<MessageType>> => {
@@ -31,7 +40,22 @@ const MongoQueries = {
 	addMessage: async (message: any): Promise<MessageType> => {
 		const newMessage = new MessageModel(message)
 		return newMessage.save()
-	}
+	},
+
+	serverFind: async (serverId: string): Promise<any> => {
+		console.log(serverId)
+		return ServerModel.findById(serverId)
+	},
+
+	serverAdd: async ({ name, img_url = "", ownerUid }: any): Promise<ServerType> => {
+		const newServer = new ServerModel({
+			name,
+			img_url,
+			users: [ownerUid],
+			channels: []
+		})
+		return newServer.save()
+	} 
 
 }
 

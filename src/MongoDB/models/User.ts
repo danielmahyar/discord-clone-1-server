@@ -8,7 +8,8 @@ export type UserType = {
 	img_url: String,
 	sub_text: String,
 	status: String,
-	friends: Array<string>
+	friends: Array<string>,
+	servers: Array<string>
 }
 
 const UserSchema = new Schema({
@@ -18,7 +19,8 @@ const UserSchema = new Schema({
 	img_url: String,
 	sub_text: String,
 	status: String,
-	friends: [String]
+	friends: [String],
+	servers: [String]
 })
 
 const UserModel = model('User', UserSchema)

@@ -1,5 +1,6 @@
 import { GraphQLInt, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql'
 import DBQueries from '../../MongoDB/userqueries'
+import ServerType from './Server'
 
 const UserType = new GraphQLObjectType({
 	name: 'UserType',
@@ -26,7 +27,8 @@ const UserType = new GraphQLObjectType({
 					return null;
 				})
 			}
-		}
+		},
+		servers: { type: GraphQLList(GraphQLString) }
 	})
 })
 
